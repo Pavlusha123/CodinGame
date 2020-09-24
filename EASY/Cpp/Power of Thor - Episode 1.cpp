@@ -5,12 +5,6 @@
 
 using namespace std;
 
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- * ---
- * Hint: You can use the debug stream to print initialTX and initialTY, if Thor seems not follow your orders.
- **/
 void CheckCoord(int lightCoord, int& thorCoord, string forward, string backward, string& direction)
 {
     if (lightCoord == thorCoord) { return; }
@@ -26,7 +20,6 @@ int main()
     int initialTY; // Thor's starting Y position
     cin >> lightX >> lightY >> initialTX >> initialTY; cin.ignore();
 
-    // game loop
     string Direction;
     while (1) {
         int remainingTurns; // The remaining amount of turns Thor can move. Do not remove this line.
