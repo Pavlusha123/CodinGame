@@ -7,11 +7,6 @@
 
 using namespace std;
 
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
-
 void CheckCoords(int curIndex, int firstIndex, int lastIndex, bool& IndexFound, string& bombDir)
 {
     if (firstIndex == lastIndex)
@@ -21,20 +16,8 @@ void CheckCoords(int curIndex, int firstIndex, int lastIndex, bool& IndexFound, 
     }
 };
 
-void Step(int& curIndex, int& firstIndex, int& lastIndex, bool& direction, queue<int>& Coords, bool& IndexFound, string bombDir, bool outsideBounds, int Bound)
+void Step(int& curIndex, int& firstIndex, int& lastIndex, queue<int>& Coords, bool& IndexFound, string bombDir, int Bound)
 {
-    if (curIndex == lastIndex || curIndex - firstIndex > lastIndex - curIndex)
-    {
-        direction = false;
-    }
-    if (curIndex == firstIndex || curIndex - firstIndex < lastIndex - curIndex)
-    {
-        direction = true;
-    }
-    if (curIndex == lastIndex && curIndex == firstIndex)
-    {
-        IndexFound = true;
-    }
     int prevIndex = curIndex;
     if (!IndexFound)
     {
@@ -56,12 +39,11 @@ void Step(int& curIndex, int& firstIndex, int& lastIndex, bool& direction, queue
         }
         if (curIndex == prevIndex && curIndex < lastIndex) curIndex++;
         if (curIndex == prevIndex && curIndex > firstIndex) curIndex--;
-        outsideBounds = false;
     }
     Coords.push(curIndex);
 };
 
-void BinarySearch(int& curIndex, int& firstIndex, int& lastIndex, bool& direction, queue<int>& Coords, bool& IndexFound, string bombDir, bool& outsideBounds)
+void BinarySearch(int& curIndex, int& firstIndex, int& lastIndex, queue<int>& Coords, bool& IndexFound, string bombDir)
 {
     int prevIndex = Coords.front();
     Coords.pop();
@@ -104,7 +86,6 @@ void BinarySearch(int& curIndex, int& firstIndex, int& lastIndex, bool& directio
             curIndex++;
         }
     }
-    if (curIndex > lastIndex || curIndex < firstIndex) outsideBounds = true;
 };
 
 int main()
@@ -130,13 +111,9 @@ int main()
     XCoords.push(X0);
     YCoords.push(Y0);
     YCoords.push(Y0);
-    bool outsideBounds = false;
     string XbombDir = "UNKNOWN";
     string YbombDir = "UNKNOWN";
     int curStep = 0;
-    bool Xdirection = true; //true - asc; false - desc
-    bool Ydirection = true; //true - asc; false - desc
-
 
     while (1) {
         string bombDir; // Current distance to the bomb compared to previous distance (COLDER, WARMER, SAME or UNKNOWN)
@@ -150,12 +127,12 @@ int main()
             YbombDir = bombDir;
             if (!Yfound)
             {
-                BinarySearch(Y0, firstY, lastY, Ydirection, YCoords, Yfound, YbombDir, outsideBounds);
+                BinarySearch(Y0, firstY, lastY, YCoords, Yfound, YbombDir);
             }
             CheckCoords(X0, firstX, lastX, Xfound, XbombDir);
             if (!Xfound)
             {
-                Step(X0, firstX, lastX, Xdirection, XCoords, Xfound, XbombDir, outsideBounds, W - 1);
+                Step(X0, firstX, lastX, XCoords, Xfound, XbombDir, W - 1);
             }
             else
             {
@@ -167,12 +144,12 @@ int main()
             XbombDir = bombDir;
             if (!Xfound)
             {
-                BinarySearch(X0, firstX, lastX, Xdirection, XCoords, Xfound, XbombDir, outsideBounds);
+                BinarySearch(X0, firstX, lastX, XCoords, Xfound, XbombDir);
             }
             CheckCoords(Y0, firstY, lastY, Yfound, YbombDir);
             if (!Yfound)
             {
-                Step(Y0, firstY, lastY, Ydirection, YCoords, Yfound, YbombDir, outsideBounds, H - 1);
+                Step(Y0, firstY, lastY, YCoords, Yfound, YbombDir, H - 1);
             }
             else
             {
@@ -191,4 +168,3 @@ int main()
         cout << X0 << " " << Y0 << endl;
     }
 }
-
